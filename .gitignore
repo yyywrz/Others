@@ -1,0 +1,10 @@
+#Some programs that just experiments or attempts
+/test
+
+#VS code
+.vscode/launch.json
+
+#Other context files
+*.log
+*.txt
+*.pem

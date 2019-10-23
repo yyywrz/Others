@@ -39,5 +39,5 @@ if __name__=='__main__':
     initPrimeNumFile()
     primeArr = getPrevious()
     initPoint = primeArr[-1]
-    timePeriod = 300
+    timePeriod = 2*60*60
     calculatePrime(primeArr,initPoint,timePeriod)
