@@ -8,8 +8,6 @@ class primeGen:
         self.rt = runtime
         self.tt = timetrigger
         self.arr = []
-        if (upper_bound < 2 and runtime <= 0):
-            print('invaild input!')
             
     def __initPrimeNumFile(self):
         file = Path("primeNum.data")
@@ -21,10 +19,11 @@ class primeGen:
             print('creat file')
 
     def getPrimeArr(self):
-        with open('primeNum.data') as f:
-            line=f.read()
-            for x in line.split('\t'):
-                self.arr.append(int(x))
+        if len(self.arr)==0:
+            with open('primeNum.data') as f:
+                line=f.read()
+                for x in line.split('\t'):
+                    self.arr.append(int(x))
 
     def __isPrime(self,i):
         for j in range(0,round(pow(len(self.arr),0.5))):
@@ -81,14 +80,44 @@ class primeGen:
             elapse = time.time() - beginning
             print(self.getinfo())
     
-    def run(self):
+    def __checking(self,x):
+        for i in self.arr:
+            if i==x:
+                return True
+            if i>x:
+                return False
+        return False
+
+    def isprime(self,x):
         self.__initPrimeNumFile()
         self.getPrimeArr()
-        if self.rt >0:
-            self.timeTrigger()
-        if self.upper_bound > 1 :
-            self.__upperBoundStop(self.arr[-1])
-        self.getinfo()
+        i=self.arr[-1]
+        if isinstance(x, int):
+            if x<i:
+                return self.__checking(x)
+            else:
+                with open('primeNum.data','a') as f:
+                    while i<x:
+                        i=i+2
+                        if self.__isPrime(i):
+                            self.arr.append(i)
+                            f.write('\t'+str(i))
+                return self.__checking(x)
+        else:
+            print(type(x))
+            return False
+
+    def run(self):
+        if self.upper_bound < 2 or self.rt <= 0 or self.tt<=0:
+            print('invaild input!')
+        else:
+            self.__initPrimeNumFile()
+            self.getPrimeArr()
+            if self.rt >0:
+                self.timeTrigger()
+            if self.upper_bound > 1 :
+                self.__upperBoundStop(self.arr[-1])
+            self.getinfo()
 
 def getInput():
     timePeriod = int(input('Please input running time (s) :'))
@@ -100,5 +129,7 @@ if __name__=='__main__':
     (a,b,c) = getInput()
     pm = primeGen(upper_bound=c, runtime=a,timetrigger=b)
     pm.run()
-    print(pm.info)
+    while True:
+        print(pm.isprime(int(input('check if it is prime: '))))
+        print(pm.getinfo())
     del pm
