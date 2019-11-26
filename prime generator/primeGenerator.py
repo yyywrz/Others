@@ -104,7 +104,6 @@ class primeGen:
                             f.write('\t'+str(i))
                 return self.__checking(x)
         else:
-            print(type(x))
             return False
 
     def run(self):
